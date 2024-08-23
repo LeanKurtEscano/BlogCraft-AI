@@ -1,13 +1,14 @@
 .section1 {
     width: 100%;
-    height: 100vh;
-    padding-top: 50px;
+    height: auto; /* Automatically adjusts to content height */
+    min-height: 100vh; /* Ensures section takes up the full height of the viewport */
+    margin-top:70px;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color:  #282727; 
-    /* Optional: Add a background color */
+    background-color: #282727;
 }
+
 
 .main-container {
     display: flex;
@@ -101,3 +102,47 @@
 
 }
     
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to { 
+        transform: rotate(360deg);
+    }
+}
+ 
+
+ @-webkit-keyframes rotate {
+    from {
+        -webkit-transform: rotate(0deg);
+    }
+    to { 
+        -webkit-transform: rotate(360deg);
+    }
+}
+
+.load {
+    width: 100px;
+    height: 100px;
+    margin: 30px auto 0;
+    border:solid 10px #8822aa;
+    border-radius: 50%;
+    border-right-color: transparent;
+    border-bottom-color: transparent;
+     -webkit-transition: all 0.5s ease-in;
+    -webkit-animation-name: rotate; 
+    -webkit-animation-duration: 1.0s; 
+    -webkit-animation-iteration-count:  infinite;
+    -webkit-animation-timing-function: linear;
+
+    
+         transition: all 0.5s ease-in;
+    animation-name:             rotate; 
+    animation-duration:         1.0s; 
+    animation-iteration-count:  infinite;
+    animation-timing-function: linear; 
+}
+
+.input-container {
+    color: white;
+}
