@@ -20,7 +20,7 @@ const Home = () => {
                 <input type='url' id='youtube-link' className='new-input' placeholder="Paste YouTube Link Here..."></input>
                 <button className='btn'>Generate</button>
             </div>
-            <div  style = {{display: 'none'}}id="loading-circle" className='load'></div>
+            <div style = {{display: 'none'}}id="loading-circle" className='load'></div>
             <div className='generated-title'>
                 <h2 className='title-2'>Generated Blog Article</h2>
             </div>

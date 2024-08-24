@@ -1,0 +1,98 @@
+
+.login-container {
+    width: 500px;
+    height: 350px;
+    padding: 20px;
+    border-radius: 8px;
+    background: #2e2e2e; /* Dark gray background for container */
+    border: 1px solid #3c3c3c; /* Slightly lighter border for subtle definition */
+    box-shadow: 6px 6px 15px #1c1c1c, -6px -6px 8px #302f2f;
+   
+  }
+ .login-h2 {
+    background: linear-gradient(90deg, #ff69b4, #8a2be2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 30px;
+  }
+  .login-label{
+    color: #d15b96;
+
+  }
+  .login-link {
+    background: linear-gradient(90deg, #ff69b4, #8a2be2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer; /* Adds a pointer cursor for better UX */
+    text-decoration: none; /* Ensures no default underline */
+  }
+  
+  .login-link:hover {
+    background: linear-gradient(90deg, #ff69b4, #8a2be2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-decoration: underline;
+    text-decoration-color: #ff69b4; /* Changes underline color to pink */
+  }
+  
+
+
+  .login-form {
+    display: flex;
+    flex-direction: column;
+    max-width: 900px;
+    margin: auto;
+  }
+  
+  
+ .login-input {
+    padding: 8px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+  }
+  
+.login-link {
+  padding-top: 10px;
+}
+
+.login-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+}
+
+.login-button {
+    padding: 8px 20px;
+    font-weight: 700;
+    background: linear-gradient(90deg, #ff69b4, #8a2be2);
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  
+    margin-top: 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    background-image: linear-gradient(to right, #ff69b4 0%, #8a2be2 50%, transparent 50%, transparent 100%);
+    background-size: 200% 100%;
+    transition: background-position 0.6s ease-in-out, background-color 0.6s ease-in-out;
+  }
+  
+  .login-button:hover {
+    background-position: -100% 0;
+    background-color: #ff69b4; /* Change to pink */
+    color: #ffffff; /* Ensure text is white for contrast */
+  }
+  
+  /* Add this for the transition back to violet */
+  .login-button:not(:hover) {
+    background-position: 0 0;
+    background-color: #8a2be2; /* Violet color */
+    transition: background-position 0.6s ease-in-out, background-color 0.6s ease-in-out;
+  }
+  
