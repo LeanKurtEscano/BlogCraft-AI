@@ -1,6 +1,9 @@
 import React from 'react'
 import '../styles/Home.css'
 const Home = () => {
+    const showlog = () => {
+        console.log("Lean was here")
+    }
   return (
     <section className='section1'>
         <div className='main-container'>
@@ -18,7 +21,7 @@ const Home = () => {
             </div>
             <div className='input-container'>
                 <input type='url' id='youtube-link' className='new-input' placeholder="Paste YouTube Link Here..."></input>
-                <button className='btn'>Generate</button>
+                <button className='btn' onClick={showlog}>Generate</button>
             </div>
             <div style = {{display: 'none'}}id="loading-circle" className='load'></div>
             <div className='generated-title'>

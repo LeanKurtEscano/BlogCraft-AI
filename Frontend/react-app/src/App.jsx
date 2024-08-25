@@ -3,6 +3,8 @@ import Nav from './Sections/Navbar';
 import Home from './Sections/Home';
 import Log from './Sections/Log';
 import Signup from './Sections/Signup';
+import Blog from './Sections/Blog';
+import BlogDetails from './Sections/BlogDetails';
 
 import './App.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
@@ -39,7 +41,20 @@ function App() {
             }
              
            />
-
+           <Route
+             path='/blog'
+             element={
+              <section className='blog-section'>
+                < Blog/>
+              </section>
+             }/>
+             <Route
+               path='/blogdetails'
+               element = {
+                <section className='blogdetails-section'>
+                  <BlogDetails />
+                </section>
+               }/>             
         </Routes>
       </Router>
     </main>
