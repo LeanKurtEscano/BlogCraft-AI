@@ -16,7 +16,7 @@ function App() {
         <Nav />
         <Routes>
           <Route 
-            path="/" 
+            path="/home" 
             element={
               <section className="Hero">
                 <Home />

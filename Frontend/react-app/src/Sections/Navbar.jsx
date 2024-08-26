@@ -21,7 +21,7 @@ const Nav = () => {
         </div>
         <div className='nav-content'>
           <ul className={`nav-links ${isOpen ? 'open' : ''}`}>
-            <li className='nav-item'><a href="/">Home</a></li>
+            <li className='nav-item'><a href="/home">Home</a></li>
             <li className='nav-item'><a href="/about">About</a></li>
             <li className='nav-item'><a href="/blog">Blogs</a></li>
             <li className='nav-item'><a href="/login">Login</a></li>
