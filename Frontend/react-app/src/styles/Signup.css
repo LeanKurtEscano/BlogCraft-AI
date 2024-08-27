@@ -13,10 +13,7 @@
 
     margin-bottom: 30px;
   }
-  .login-label{
- 
-
-  }
+  
   .login-link {
     display: flex;
     justify-content: center;
@@ -38,7 +35,7 @@
  .login-input {
     padding: 8px;
     margin-top: 5px;
-    margin-bottom: 10px;
+   
   }
   
 

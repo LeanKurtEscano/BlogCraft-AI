@@ -1,19 +1,24 @@
-import React from 'react'
-import '../styles/Signup.css'
-import { useState } from 'react'
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; 
 import axios from 'axios';
+import '../styles/Signup.css';
 
 const Signup = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [repeatPassword, setRepeatpassword] = useState("");
-  const [message, setMessage] = useState("");
+  const [repeatPassword, setRepeatPassword] = useState("");
+  const [userError, setUserError] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
   const navigate = useNavigate(); 
 
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setUserError("");
+    setEmailError("");
+    setPasswordError("");
+
     try {
       const response = await axios.post('http://localhost:8000/api/signup/', {
         username,
@@ -25,39 +30,88 @@ const Signup = () => {
           'Content-Type': 'application/json',
         }
       });
-      setMessage(response.data.Success || response.data.Error);
-      if (response.data.Success) {
-        navigate('/home'); 
+
+      if (response.data.User) {
+        setUserError(response.data.User);
       }
-
- 
-    } catch {
-      console.log("Failed to create account");
-
-    };
-
+      if (response.data.Email) {
+        setEmailError(response.data.Email);
+      }
+      if (response.data.Password) {
+        setPasswordError(response.data.Password);
+      }
+      if (response.data.Success) {
+        navigate('/'); 
+      }
+    } catch (error) {
+      console.error("Failed to create account:", error.response?.data || error.message);
+      if (error.response) {
+        const { data } = error.response;
+        if (data.User) {
+          setUserError(data.User);
+        }
+        if (data.Email) {
+          setEmailError(data.Email);
+        }
+        if (data.Password) {
+          setPasswordError(data.Password);
+        }
+        if (data.Pass) {
+          setPasswordError(data.Pass);
+        }
+      }
+    }
   };
 
   return (
     <section className='signup-section'>
-    <div className="signup-container">
-      <form className='login-form' onSubmit={handleSubmit}>
-        <h2 className='login-h2'>Signup</h2>
-        <label  className='login-label'htmlFor="email">Username:</label>
-        <input type="text" name="text" className='login-input' value = {username}onChange={(e) => setUsername(e.target.value)} required></input>
-        <label  className='login-label'htmlFor="email">Email:</label>
-        <input type="email" name="email" className='login-input'value = {email} onChange = {(e) => setEmail(e.target.value)}required></input>
-        <label className='login-label' htmlFor="password">Password:</label>
-        <input type="password" name="password" className='login-input' value = {password}onChange = {(e) => setPassword(e.target.value)}required></input>
-        <label className='login-label' htmlFor="password">Confirm password:</label>
-        <input type="password" name="password" className='login-input' value={repeatPassword}onChange={(e) => setRepeatpassword(e.target.value)}required></input>
-        <button className="login-button">Sign Up</button>
-        <div className="login-link">
-        </div>
-      </form>
-    </div>
-  </section> 
-  )
+      <div className="signup-container">
+        <form className='login-form' onSubmit={handleSubmit}>
+          <h2 className='login-h2'>Signup</h2>
+          <label className='login-label' htmlFor="username">Username:</label>
+          <input 
+            type="text" 
+            name="username" 
+            className='login-input' 
+            value={username} 
+            onChange={(e) => setUsername(e.target.value)} 
+            required
+          />
+          {userError && <p className='error-text'>{userError}</p>}
+          <label className='login-label' htmlFor="email">Email:</label>
+          <input 
+            type="email" 
+            name="email" 
+            className='login-input' 
+            value={email} 
+            onChange={(e) => setEmail(e.target.value)} 
+            required
+          />
+          {emailError && <p className='error-text'>{emailError}</p>}
+          <label className='login-label' htmlFor="password">Password:</label>
+          <input 
+            type="password" 
+            name="password" 
+            className='login-input' 
+            value={password} 
+            onChange={(e) => setPassword(e.target.value)} 
+            required
+          />
+          <label className='login-label' htmlFor="repeatPassword">Confirm Password:</label>
+          <input 
+            type="password" 
+            name="repeatPassword" 
+            className='login-input' 
+            value={repeatPassword} 
+            onChange={(e) => setRepeatPassword(e.target.value)} 
+            required
+          />
+          {passwordError && <p className='error-text'>{passwordError}</p>}
+          <button className="login-button">Sign Up</button>
+        </form>
+      </div>
+    </section> 
+  );
 }
 
-export default Signup
+export default Signup;

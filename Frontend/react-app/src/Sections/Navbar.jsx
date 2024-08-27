@@ -24,7 +24,7 @@ const Nav = () => {
             <li className='nav-item'><a href="/home">Home</a></li>
             <li className='nav-item'><a href="/about">About</a></li>
             <li className='nav-item'><a href="/blog">Blogs</a></li>
-            <li className='nav-item'><a href="/login">Login</a></li>
+            <li className='nav-item'><a href="/">Login</a></li>
           </ul>
         </div>
       </div>

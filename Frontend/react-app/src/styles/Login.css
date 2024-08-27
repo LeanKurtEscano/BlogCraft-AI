@@ -1,4 +1,6 @@
-
+.error-text {
+  color: red;
+}
 .login-container {
     width: 500px;
     height: 350px;
@@ -50,8 +52,7 @@
   
  .login-input {
     padding: 8px;
-    margin-top: 5px;
-    margin-bottom: 10px;
+    margin-top: 2px;
   }
   
 .login-link {

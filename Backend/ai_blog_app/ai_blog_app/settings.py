@@ -77,12 +77,8 @@ WSGI_APPLICATION = 'ai_blog_app.wsgi.application'
 # Database configuration
 DATABASES = {
     'default': {
-        'ENGINE': '',
-        'NAME': '',
-        'USER': '',
-        'PASSWORD': '',
-        'HOST': '',
-        'PORT': '',
+        'ENGINE': 'django.db.backends.postgresql',
+       
     }
 }
 
@@ -112,3 +108,11 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Ensure SESSION_ENGINE is set to use the default database backend or file-based storage
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+
+# In settings.py
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]
