@@ -5,15 +5,18 @@ import Log from './Sections/Log';
 import Signup from './Sections/Signup';
 import Blog from './Sections/Blog';
 import BlogDetails from './Sections/BlogDetails';
-
+import { MyContextProvider } from './Sections/MyContext';
 import './App.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 function App() {
+
+  const [isAuthenticate, setAuthenticate] = useState(false);
   return (
+    <MyContextProvider>
     <main>
       <Router>
-        <Nav />
+        <Nav isAuthenticate={isAuthenticate} setAuthenticate={setAuthenticate}/>
         <Routes>
           <Route 
             path="/home" 
@@ -27,7 +30,7 @@ function App() {
             path="/" 
             element={
               <section className="login-section">
-                <Log />
+                <Log setAuthenticate = {setAuthenticate}/>
               </section>
             } 
           />
@@ -58,7 +61,8 @@ function App() {
         </Routes>
       </Router>
     </main>
-  );
+    </MyContextProvider>
+  )
 }
 
 export default App;

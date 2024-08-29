@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -22,7 +23,7 @@ SECRET_KEY = 'django-insecure-bt=-%$%vzter3qw%o#h-&)k$)(ms58br=s009^86zbv+4ud)ol
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+
 
 # Application definition
 INSTALLED_APPS = [
@@ -78,7 +79,11 @@ WSGI_APPLICATION = 'ai_blog_app.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-       
+        'NAME': 'aiblog',
+        'USER': 'postgres',
+        'PASSWORD': 'leankurt124*',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 
@@ -116,3 +121,4 @@ SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]
+

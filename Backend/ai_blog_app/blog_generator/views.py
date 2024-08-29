@@ -3,7 +3,11 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from django.contrib.auth import login,authenticate
 from django.contrib.auth.hashers import make_password
-from blog_generator.models import User # Ensure correct import
+from blog_generator.models import User, BlogArticle
+from django.conf import settings
+from langchain_core.prompts import PromptTemplate
+import google.generativeai as genai
+
 
 @csrf_exempt
 def signup(request):
@@ -68,5 +72,96 @@ def login(request):
     except Exception as e:
         print(f"Response failed: {e}")
         return JsonResponse({"Error": "Internal Server Error"}, status=500)
+    
 
 
+
+
+
+def create_prompt(tone, topic, style, complexity):
+    template = """
+    You are a technical copywriter fluent in all subjects. You are developing a blog article about "{topic}" with a "{tone}" tone.
+    Create an article that covers the topic in {complexity} detail with a title, headline, engaging introduction, and provide a few interesting 
+    facts and statistics with hyperlinks and the formatting to fit medium.com’s editing language in a {style} style.
+    """
+    
+    prompt = PromptTemplate(
+        input_variables=["topic", "style", "complexity", "tone"], 
+        template=template
+    )   
+    formatted_prompt = prompt.format(
+        topic=topic,
+        style=style,
+        complexity=complexity,
+        tone=tone
+    )
+    
+    print("Succesfully Created Prompt")
+    
+    return formatted_prompt
+
+@csrf_exempt
+def generate_blog(request):
+    try:
+        data = json.loads(request.body)
+        tone = data.get('tone')
+        print(tone)
+        topic = data.get('topic')
+        print(topic)
+        style = data.get('style')
+        print(style)
+        complexity = data.get('complexity')
+        print(complexity)
+        username  = data.get('username')
+        print(username)
+
+        # Validate input
+        if not all([tone, topic, style, complexity]):
+            return JsonResponse({'missing': 'Missing required fields in request.'}, status=400)
+        
+        
+        prompt = create_prompt(tone, topic, style, complexity)
+        print("Successfully Created Prompt")
+       
+        # Create the model
+        
+        genai.configure(api_key="")
+        generation_config = {
+            "temperature": 1,
+            "top_p": 0.95,
+            "top_k": 64,
+            "max_output_tokens": 8192,
+            "response_mime_type": "text/plain",
+        }
+        
+        model = genai.GenerativeModel(
+            model_name="gemini-1.5-flash",
+            generation_config=generation_config,
+            # safety_settings = Adjust safety settings
+            # See https://ai.google.dev/gemini-api/docs/safety-settings
+        )
+
+        chat_session = model.start_chat(
+            history=[
+                # History can be included here if needed
+            ]
+        )
+
+        response = chat_session.send_message(prompt)
+        
+        
+               
+        user = User.objects.get(username = username)
+        
+        blog_article = BlogArticle.objects.create(  
+              user = user,
+              topic = topic,
+              tone = tone,
+              style = style,
+              complexity = complexity,
+              content = response.text
+           )           
+           
+        return JsonResponse({'article': response.text})
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
