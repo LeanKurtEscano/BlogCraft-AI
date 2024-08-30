@@ -1,0 +1,13 @@
+To set up the project, manually install the following dependencies:
+
+Frontend:
+Ensure Node.js is installed
+npm install vite
+npm create vite@latest my-vite-react-app --template react
+npm install axios
+
+Backend:
+Ensure Pip is installed
+pip install Django
+pip install pyscog2
+pip install google-generativeai # Google AI python SDK
