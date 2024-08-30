@@ -1,12 +1,13 @@
 import json
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
-from django.contrib.auth import login,authenticate
+from django.contrib.auth import login,authenticate,logout
 from django.contrib.auth.hashers import make_password
 from blog_generator.models import User, BlogArticle
 from django.conf import settings
 from langchain_core.prompts import PromptTemplate
 import google.generativeai as genai
+from django.contrib.auth.decorators import login_required
 
 
 @csrf_exempt
@@ -62,9 +63,11 @@ def login(request):
         
         # Authenticate user
         user = authenticate(request, username=username, password=password)
+        
         if user is not None:
-            print(f"User authenticated successfully: {username}")
-            return JsonResponse({'Success': "Credentials are valid"}, status=200)
+            get_user_id = User.objects.get(username=username)
+            user_id = get_user_id.id
+            return JsonResponse({'Success': "Credentials are valid", "UserID": user_id}, status=200)
         else:
             print(f"Failed authentication attempt for user: {username}")
             return JsonResponse({'Pass': 'Invalid password'}, status=400)
@@ -165,3 +168,50 @@ def generate_blog(request):
         return JsonResponse({'article': response.text})
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
+
+
+@csrf_exempt
+def blog_details(request):
+    if request.method != 'POST':
+        return JsonResponse({"error": "Invalid request method"}, status=405)
+
+    try:
+        data = json.loads(request.body)
+        userid = data.get('userid')
+        
+        if not userid:
+            return JsonResponse({"error": "User ID is required"}, status=400)
+        
+        try:
+            int_id = int(userid)
+        except ValueError:
+            return JsonResponse({"error": "Invalid User ID format"}, status=400)
+        
+        blog_details = BlogArticle.objects.filter(user_id=int_id)
+        
+        if not blog_details.exists():
+            return JsonResponse({"error": "No blog posts found for this user"}, status=404)
+        
+        blog_list = []
+        for blog in blog_details:
+            content = {
+                "topic": blog.topic,
+                "tone": blog.tone,
+                "style": blog.style,
+                "complextity": blog.complexity,
+                "content": blog.content
+            }
+            blog_list.append(content)
+        
+        return JsonResponse(blog_list, safe=False)
+
+    except Exception as e:
+        print(f"Error: {e}")
+        return JsonResponse({"error": "Internal Server Error"}, status=500)
+
+@csrf_exempt
+def log_out(request):
+    if request.method == 'POST':
+        logout(request)
+        return JsonResponse({'Success': 'Logged out successfully'})
+    return JsonResponse({'Error': 'Invalid request method'}, status=405)

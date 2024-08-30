@@ -44,7 +44,7 @@
 }
 
 .desc {
-    width: 450px;
+    width: 400px;
     height: auto; /* Adjusted to fit content */
     color: white;
     margin-bottom: 20px; /* Add margin to create space between .desc and .enter */
@@ -78,6 +78,7 @@
 }
 
 .btn {
+    margin: 10px;
     color: white; /* Text color */
     background: linear-gradient(90deg, #ff69b4, #8a2be2); /* Initial gradient background */
     border: none; /* Remove border if any */
@@ -87,6 +88,20 @@
     text-align: center; /* Center text */
     border-radius: 5px; /* Optional: Add border radius for rounded corners */
     transition: background 0.3s ease; /* Smooth transition for background */
+}
+
+
+
+.btn-disabled {
+    color: white; /* Text color */
+    background: grey; /* Initial gradient background */
+    border: none; /* Remove border if any */
+    padding: 10px 20px; /* Adjust padding as needed */
+    font-size: 1rem; /* Adjust font size as needed */
+    cursor: pointer; /* Pointer cursor on hover */
+    text-align: center; /* Center text */
+    border-radius: 5px; /* Optional: Add border radius for rounded corners */
+    transition: background 0.3s ease; /* Smooth transition for
 }
 
 .btn:hover {

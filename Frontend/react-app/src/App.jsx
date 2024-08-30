@@ -4,7 +4,7 @@ import Home from './Sections/Home';
 import Log from './Sections/Log';
 import Signup from './Sections/Signup';
 import Blog from './Sections/Blog';
-import BlogDetails from './Sections/BlogDetails';
+
 import { MyContextProvider } from './Sections/MyContext';
 import './App.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
@@ -22,7 +22,7 @@ function App() {
             path="/home" 
             element={
               <section className="Hero">
-                <Home />
+                <Home isAuthenticate= {isAuthenticate} />
               </section>
             } 
           />
@@ -48,16 +48,9 @@ function App() {
              path='/blog'
              element={
               <section className='blog-section'>
-                < Blog/>
+                < Blog isAuthenticate= {isAuthenticate}/>
               </section>
-             }/>
-             <Route
-               path='/blogdetails'
-               element = {
-                <section className='blogdetails-section'>
-                  <BlogDetails />
-                </section>
-               }/>             
+             }/>     
         </Routes>
       </Router>
     </main>

@@ -1,21 +1,27 @@
-.blog-page{
+.blog-page {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 20px;
-    padding-top: 180px;
-
+    padding-top: 140px; /* Adjust if needed */
+    margin: 20px auto;
+    min-height: 100vh;
+    width: 100%;
+    box-sizing: border-box; /* Ensure padding and border are included in the element's total width and height */
 }
+
 .blog-container {
     width: 450px;
     padding: 20px;
     border:  1px solid black;
     border: 1px solid #3c3c3c; /* Slightly lighter border for subtle definition */
     box-shadow: 6px 6px 15px #1c1c1c, -6px -6px 8px #302f2f; /* Neumorphic shadow for dark theme */
+    height: auto;
+
 
 }
 .title-container {
     display: flex;
+
 }
 
 .blog-box{
@@ -25,6 +31,11 @@
     border: 1px solid #3c3c3c; /* Slightly lighter border for subtle definition */
     box-shadow: 6px 6px 15px #1c1c1c, -6px -6px 8px #302f2f; /* Neumorphic shadow for dark theme */
     transition: box-shadow 0.3s ease-in-out; 
+    height: 95px;
+    overflow: auto;
+    overflow-x: hidden;
+    
+   
 }
 
 .new-title{

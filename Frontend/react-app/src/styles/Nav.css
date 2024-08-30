@@ -10,11 +10,19 @@
     display: flex;
     justify-content: center;
     overflow: hidden;
-    width: 200px;
-    padding-top: 15px;
+    width: 100px;
     height: 50px;
+    border: #1c1c1c;
 }
 
+.logout-button {
+    font-size: 15px;
+    background: linear-gradient(90deg, #ff69b4, #8a2be2); 
+    font-weight: 500;/* Pink to Violet gradient */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    border: none;
+}
 .img-inside {
     object-fit: contain;
 }

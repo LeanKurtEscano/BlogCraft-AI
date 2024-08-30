@@ -4,7 +4,7 @@ import axios from 'axios';
 import { MyContext } from './MyContext';
 
 
-const Home = () => {
+const Home = ({isAuthenticate}) => {
   const [loading, setLoading] = useState(false);
   const [topic, setTopic] = useState('');
   const [tone, setTone] = useState('Tone'); 
@@ -12,6 +12,7 @@ const Home = () => {
   const [complexity, setComplexity] = useState('Complexity'); 
   const [content, setContent] = useState('');
   const [invalid, setInvalid] = useState('');
+  const [missing, setMissing] = useState('');
   const { username, setUsername } = useContext(MyContext);
 
   const sendContent = async (e) => {
@@ -36,8 +37,16 @@ const Home = () => {
       if(response.data.article){
         setContent(response.data.article);
         setInvalid('');
+        setTopic('');
+        setTone('');
+        setStyle('');
+        setComplexity('');
       } else {
         setInvalid('Failed to generate the article. Please try again.');
+      }
+
+      if (response.data.missing){
+        setMissing("Missing required fields");
       }
     } catch (error) {
       console.error('Error sending the request:', error);
@@ -45,6 +54,7 @@ const Home = () => {
     } finally {
       setLoading(false); 
     }
+
   }
   
 
@@ -52,16 +62,16 @@ const Home = () => {
     <section className='section1'>
       <div className='main-container'>
         <div className='title-container'>
-          <h1 className='title'>Welcome to BlogClipper</h1>
+          <h1 className='title'>Welcome to BlogCraft AI
+          </h1>
         </div>
         <div className='desc'>
           <p>
-            Generate high-quality blog articles from YouTube videos using artificial intelligence. Simply
-            enter the link to the YouTube videos below and let the AI create the content for you!
+            Unlock the power of AI to craft compelling blog content with ease. BlogCraft AI enables you to input your desired blog topic, select the style, tone, and complexity, and let our intelligent assistant generate polished articles tailored to your specifications. 
           </p>
         </div>
         <div className='enter'>
-          <h2 className='title-2'>Enter YouTube Video Link</h2>
+          <h2 className='title-2'>Enter Your Topic</h2>
         </div>
         <div className='input-container'>
           <input
@@ -76,7 +86,7 @@ const Home = () => {
         </div>
         <div className='option-container'>
           <select value={tone} onChange={(e) => setTone(e.target.value)} className='choose-option' required>
-            <option value="Tone" disabled>{tone}</option> 
+            <option  disabled>{tone}</option> 
             <option value="Informative">Informative</option>
             <option value="Persuasive">Persuasive</option>
             <option value="Casual">Casual</option>
@@ -84,20 +94,22 @@ const Home = () => {
           </select>
 
           <select value={style} onChange={(e) => setStyle(e.target.value)} className='choose-option' required>
-            <option value="Style" disabled>{style}</option> 
+            <option disabled>{style}</option> 
             <option value="Narrative">Narrative</option>
             <option value="Descriptive">Descriptive</option>
             <option value="Expository">Expository</option>
           </select>
 
           <select value={complexity} onChange={(e) => setComplexity(e.target.value)} className='choose-option' required>
-            <option value="Complexity" disabled>{complexity}</option> 
+            <option disabled>{complexity}</option> 
             <option value="Simple">Simple</option>
             <option value="Intermediate">Intermediate</option>
             <option value="Advanced">Advanced</option>
           </select>
         </div>
-        <button className='btn' onClick={sendContent} disabled={loading}>
+        {missing && <p className='error-text'>{missing}</p>}
+
+        <button className= {`btn ${isAuthenticate ? 'btn': 'btn-disabled'}`} onClick={sendContent} disabled={!isAuthenticate}>
           {loading ? 'Generating...' : 'Generate'}
         </button>
 
@@ -109,9 +121,11 @@ const Home = () => {
         <div className='generated-title'>
           <h2 className='title-2'>Generated Blog Article</h2>
         </div>
-        <div className='generated-container'>
+        {content && (
+          <div className='generated-container'>
           <p>{content}</p>
         </div>
+        )}
       </div>
     </section>
   );

@@ -1,11 +1,11 @@
-import React, { useState, useContext } from 'react';
+import  { useState, useContext } from 'react';
 import '../styles/Login.css';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { MyContext } from './MyContext'; // Ensure this is the correct context if you're using one
 
 const Log = ({ setAuthenticate }) => {
-  const {username, setUserName} = useContext(MyContext);
+  const {username, setUserName, setUserID} = useContext(MyContext);
   const [password, setPassword] = useState("");
   const [userError, setUserError] = useState("");
   const [passwordError, setPasswordError] = useState("");
@@ -28,15 +28,16 @@ const Log = ({ setAuthenticate }) => {
       } else if (response.data.Pass) {
         setPasswordError("Incorrect Password");
       } else if (response.data.Success) {
+        setUserID(response.data.UserID);
         setAuthenticate(true);
-        localStorage.setItem('username', username);
         navigate('/home');
       }
 
-    } catch {
-      console.log("Login failed");
+    } catch(error) {
+      alert("Invalid Credentials")
     }
   };
+
 
   return (
     <section className="login-section">

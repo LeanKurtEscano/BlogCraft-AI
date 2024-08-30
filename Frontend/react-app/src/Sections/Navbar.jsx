@@ -1,9 +1,31 @@
 import React, { useState } from 'react';
 import '../styles/Nav.css';
-import { Link } from 'react-router-dom';
-
-const Nav = ({ isAuthenticate,setAuthenticate }) => {
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import logo2 from '../assets/logo2.png';
+const Nav = ({ isAuthenticate, setAuthenticate }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate(); // To redirect after logout
+
+  const user_logout = async () => {
+    try {
+      const response = await axios.post('http://localhost:8000/api/logout/', {}, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (response.data.Success) {
+        setAuthenticate(false);
+        localStorage.removeItem('username');
+        navigate('/'); 
+      } else {
+        console.error('Logout failed:', response.data.Error);
+      }
+    } catch (error) {
+      console.error('Error during logout:', error);
+    }
+  };
 
   const toggleNavBar = () => {
     setIsOpen(!isOpen);
@@ -13,7 +35,7 @@ const Nav = ({ isAuthenticate,setAuthenticate }) => {
     <nav className={`navbar ${isOpen ? 'open' : ''}`}>
       <div className='logo-container'>
         <img
-          src='#'
+          src={logo2}
           className='img-inside'
           height={49}
           width={200}
@@ -31,16 +53,13 @@ const Nav = ({ isAuthenticate,setAuthenticate }) => {
               <Link to='/home'>Home</Link>
             </li>
             <li className='nav-item'>
-              <Link to='/about'>About</Link>
-            </li>
-            <li className='nav-item'>
               <Link to='/blog'>Blogs</Link>
             </li>
             {isAuthenticate ? (
               <li className='nav-item'>
-                <Link to='/' onClick={() => setAuthenticate(false)}>
+                <button onClick={user_logout} className='logout-button'>
                   Logout
-                </Link>
+                </button>
               </li>
             ) : (
               <li className='nav-item'>
