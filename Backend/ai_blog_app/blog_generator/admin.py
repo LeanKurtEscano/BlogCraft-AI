@@ -1,8 +1,6 @@
 from django.contrib import admin
-from .models import User,BlogArticle
+from .models import BlogArticle
 # Register your models here.
-admin.site.register(User)
-
 
 @admin.register(BlogArticle)
 class BlogArticleAdmin(admin.ModelAdmin):

@@ -2,8 +2,9 @@ import json
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from django.contrib.auth import login,authenticate,logout
+from django.contrib.auth.models import User 
 from django.contrib.auth.hashers import make_password
-from blog_generator.models import User, BlogArticle
+from blog_generator.models import BlogArticle
 from django.conf import settings
 from langchain_core.prompts import PromptTemplate
 import google.generativeai as genai

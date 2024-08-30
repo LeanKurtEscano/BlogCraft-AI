@@ -16,6 +16,7 @@
     border: 1px solid #3c3c3c; /* Slightly lighter border for subtle definition */
     box-shadow: 6px 6px 15px #1c1c1c, -6px -6px 8px #302f2f; /* Neumorphic shadow for dark theme */
     height: auto;
+    margin-bottom: 200px;
 
 
 }
@@ -31,7 +32,7 @@
     border: 1px solid #3c3c3c; /* Slightly lighter border for subtle definition */
     box-shadow: 6px 6px 15px #1c1c1c, -6px -6px 8px #302f2f; /* Neumorphic shadow for dark theme */
     transition: box-shadow 0.3s ease-in-out; 
-    height: 95px;
+    height: 90px;
     overflow: auto;
     overflow-x: hidden;
     

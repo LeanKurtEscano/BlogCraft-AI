@@ -1,12 +1,5 @@
 from django.db import models
-
-class User(models.Model):
-    username = models.CharField(max_length=100, unique=True)
-    email = models.EmailField(unique=True)
-    password = models.CharField(max_length=128)  # Ensure the length is sufficient for hashed passwords
-
-    def __str__(self):
-        return self.username
+from django.contrib.auth.models import User 
 
 
 class BlogArticle(models.Model):
