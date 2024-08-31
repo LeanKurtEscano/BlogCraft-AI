@@ -65,7 +65,7 @@ const Log = ({ setAuthenticate }) => {
           />
           {passwordError && <p className="error-text">{passwordError}</p>}
           <button type="submit" className="login-button">Login</button>
-          <div className="login-link">
+          <div className="signup-link">
             <p><Link to="/signup">Don't have an account? Sign Up Now</Link></p>
           </div>
         </form>

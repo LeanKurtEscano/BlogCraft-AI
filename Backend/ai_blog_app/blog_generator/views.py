@@ -192,14 +192,14 @@ def blog_details(request):
         
         if not blog_details.exists():
             return JsonResponse({"error": "No blog posts found for this user"}, status=404)
-        
         blog_list = []
         for blog in blog_details:
             content = {
+                "id" : blog.id,
                 "topic": blog.topic,
                 "tone": blog.tone,
                 "style": blog.style,
-                "complextity": blog.complexity,
+                "complexity": blog.complexity,
                 "content": blog.content
             }
             blog_list.append(content)
@@ -216,3 +216,36 @@ def log_out(request):
         logout(request)
         return JsonResponse({'Success': 'Logged out successfully'})
     return JsonResponse({'Error': 'Invalid request method'}, status=405)
+
+@csrf_exempt
+def delete_blog(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        blog_id = data.get('blogid')
+        user_id = data.get('userid')
+        print(blog_id)
+
+      
+        try:
+            int_blog = int(blog_id)
+            int_user = int(user_id)
+        except (ValueError, TypeError):
+            return JsonResponse({'error': 'Invalid blog ID or user ID'}, status=400)
+
+    
+        if not int_blog or not user_id:
+            return JsonResponse({'error': 'Missing blog ID or user ID'}, status=400)
+
+        try:
+          
+            blog_post = BlogArticle.objects.get(id=int_blog, user_id=int_user)
+            blog_post.delete()
+            return JsonResponse({'Success': 'Successfully deleted content'}, status=200)
+
+        except:
+            
+            return JsonResponse({'error': 'Blog post not found or not authorized'}, status=404)
+
+    else:
+    
+        return JsonResponse({'error': 'Invalid request method'}, status=405)

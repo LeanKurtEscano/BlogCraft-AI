@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; 
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import '../styles/Signup.css';
 
@@ -108,6 +109,10 @@ const Signup = () => {
           />
           {passwordError && <p className='error-text'>{passwordError}</p>}
           <button className="login-button">Sign Up</button>
+          <div className="login-link">
+            <p><Link to="/">Already have an account? Click here</Link></p>
+          </div>
+          
         </form>
       </div>
     </section> 

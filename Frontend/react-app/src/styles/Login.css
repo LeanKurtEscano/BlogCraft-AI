@@ -32,13 +32,7 @@
     text-decoration: none; /* Ensures no default underline */
   }
   
-  .login-link:hover {
-    background: linear-gradient(90deg, #ff69b4, #8a2be2);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-decoration: underline;
-    text-decoration-color: #ff69b4; /* Changes underline color to pink */
-  }
+  
   
 
 

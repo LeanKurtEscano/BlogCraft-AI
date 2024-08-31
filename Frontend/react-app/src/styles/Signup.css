@@ -1,7 +1,7 @@
 
 .signup-container {
     width: 500px;
-    height: 430px;
+    height: 450px;
     padding: 20px;
     border-radius: 8px;
     background: #2e2e2e; /* Dark gray background for container */
@@ -38,7 +38,9 @@
    
   }
   
-
+.login-label {
+  margin: 5px;
+}
 
 .signup-section {
     display: flex;
@@ -47,4 +49,18 @@
     width: 100%;
     height: 100vh;
 }
+
+
+.signup-link {
+  background: linear-gradient(90deg, #ff69b4, #8a2be2);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer; /* Adds a pointer cursor for better UX */
+  text-decoration: none; /* Ensures no default underline */
+}
+
 

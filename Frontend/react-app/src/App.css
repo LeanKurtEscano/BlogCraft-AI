@@ -5,7 +5,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background:  #232528;;
+  background:  #232528;
+}
+
+.body {
+  height: 100%; 
+  background:  #232528;
 }
 
 
@@ -15,14 +20,15 @@
 }
 
 .signup-section {
-  margin-top: 30px;
+  margin-top: 35px;
   background:  #232528;;
 }
 
 .blog-section {
   width: 100%;
-  height: 100vh;
+  height: auto;
   background-color: #282727;
+  padding-bottom: 20px;
 }
 
 .blogdetails-section {

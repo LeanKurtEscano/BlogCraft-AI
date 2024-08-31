@@ -1,24 +1,27 @@
-import { useState, useEffect,useContext } from 'react';
+
+
+import { useState, useEffect, useContext } from 'react';
 import '../styles/Blog.css';
 import axios from 'axios';
 import { MyContext } from './MyContext';
-const Blog = ({isAuthenticate})=> {
-    const [blogs, setBlogs] = useState([]);
-    const {userid} = useContext(MyContext);
-    const [selectedBlog, setSelectedBlog] = useState(false);
-    
+
+const Blog = ({ isAuthenticate }) => {
+    const [ blogs, setBlogs] = useState([]);
+    const { userid } = useContext(MyContext);
+    const [success, setSuccess] = useState(false);
+
     const fetchBlogs = async () => {
         try {
             const response = await axios.post('http://localhost:8000/api/blogdetails/', {
-                userid
+                userid,
             }, {
                 headers: {
-                    'Content-Type': 'application/json' 
+                    'Content-Type': 'application/json'
                 }
             });
-            
+
             setBlogs(response.data);
-            console.log(response.data); // Check the structure of response.data
+            console.log(response.data); 
         } catch (error) {
             console.error('Failed to fetch blogs:', error);
         }
@@ -32,7 +35,25 @@ const Blog = ({isAuthenticate})=> {
         }
     }, [userid, isAuthenticate]);
 
+    const deleteBlog = async (blogID) => {
+        try {
+            const response = await axios.post('http://localhost:8000/api/deleteblog/', {
+                blogid: blogID,
+                userid
+            }, {
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
 
+            if (response.status === 200) {
+                setBlogs(blogs.filter(blog => blog.id !== blogID)); // Remove deleted blog from state
+            }
+
+        } catch (error) {
+            console.error('Failed to delete blog:', error);
+        }
+    };
 
     return (
         <section className='blog-page'>
@@ -40,17 +61,20 @@ const Blog = ({isAuthenticate})=> {
                 <div className='title-container'>
                     <h2 className='new-title'>All Blog Posts</h2>
                 </div>
-                {blogs.map((blog, index) => (
-                    <div className='blog-box' key={index}>
-                        <h1 className='blog-title'>Topic: {blog.topic}</h1>
-                        <p className='d-tone'>Tone: {blog.tone}</p>
-                        <p className='d-style'>Style: {blog.style}</p>
-                        <p className='d-complex'>Complexity: {blog.complextity}</p>
-                        <p>{blog.content}</p>
+                {blogs.map((blog) => (
+                    <div className='blog-item' key={blog.id}> 
+                        <div className='blog-box'>
+                            <h1 className='blog-title'>Topic: {blog.topic}</h1>
+                            <p className='d-tone'>Tone: {blog.tone}</p>
+                            <p className='d-style'>Style: {blog.style}</p>
+                            <p className='d-complex'>Complexity: {blog.complexity}</p> 
+                            <p>{blog.content}</p>
+                        </div>
+                        <div className='delete-container'>
+                            <button className='delete-button' onClick={() => deleteBlog(blog.id)}>Delete</button>
+                        </div>
                     </div>
                 ))}
-
-                
             </div>
         </section>
     );

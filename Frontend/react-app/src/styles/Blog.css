@@ -6,7 +6,8 @@
     margin: 20px auto;
     min-height: 100vh;
     width: 100%;
-    box-sizing: border-box; /* Ensure padding and border are included in the element's total width and height */
+    box-sizing: border-box;
+    flex-grow: 1; /* Ensure padding and border are included in the element's total width and height */
 }
 
 .blog-container {
@@ -16,7 +17,8 @@
     border: 1px solid #3c3c3c; /* Slightly lighter border for subtle definition */
     box-shadow: 6px 6px 15px #1c1c1c, -6px -6px 8px #302f2f; /* Neumorphic shadow for dark theme */
     height: auto;
-    margin-bottom: 200px;
+    
+    
 
 
 }
@@ -54,3 +56,34 @@
 p {
     color: white;
 }
+
+.delete-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-left: 200px;
+}
+.delete-button:hover {
+    background: linear-gradient(90deg, #ff69b4, #8a2be2); /* Gradient background on hover */
+    background-position: right center; /* Start gradient from the right */
+    background-size: 200% auto; 
+    color: white; 
+}
+.delete-button:active {
+    background: linear-gradient(90deg, #ff69b4, #8a2be2);
+    background-position: left center; /* Move gradient to the left */
+}
+
+.delete-button{
+    margin: 10px;
+    color: white; /* Text color */
+    background: linear-gradient(90deg, #ff69b4, #8a2be2); /* Initial gradient background */
+    border: none; /* Remove border if any */
+    padding: 10px 20px; /* Adjust padding as needed */
+    font-size: 1rem; /* Adjust font size as needed */
+    cursor: pointer; /* Pointer cursor on hover */
+    text-align: center; /* Center text */
+    border-radius: 5px; /* Optional: Add border radius for rounded corners */
+    transition: background 0.3s ease; 
+}
+
