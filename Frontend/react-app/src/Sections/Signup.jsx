@@ -32,15 +32,6 @@ const Signup = () => {
         }
       });
 
-      if (response.data.User) {
-        setUserError(response.data.User);
-      }
-      if (response.data.Email) {
-        setEmailError(response.data.Email);
-      }
-      if (response.data.Password) {
-        setPasswordError(response.data.Password);
-      }
       if (response.data.Success) {
         navigate('/'); 
       }

@@ -26,7 +26,7 @@ def signup(request):
             print(username, email, password, repeatpassword)
             
             if User.objects.filter(username= username).exists():
-                return JsonResponse({"User" : "Username already exists"})
+                return JsonResponse({"User" : "Username already exists"},status = 400)
 
             if User.objects.filter(email=email).exists():
                 return JsonResponse({"Email": "Email is already in use"}, status=400)
