@@ -1,11 +1,11 @@
-import  { useState, useContext } from 'react';
+import { useState, useContext } from 'react';
 import '../styles/Login.css';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { MyContext } from './MyContext'; // Ensure this is the correct context if you're using one
+import { MyContext } from './MyContext';
 
 const Log = ({ setAuthenticate }) => {
-  const {username, setUserName, setUserID} = useContext(MyContext);
+  const { username, setUserName, setUserID } = useContext(MyContext);
   const [password, setPassword] = useState("");
   const [userError, setUserError] = useState("");
   const [passwordError, setPasswordError] = useState("");
@@ -13,6 +13,9 @@ const Log = ({ setAuthenticate }) => {
 
   const handleForm = async (e) => {
     e.preventDefault();
+    setUserError("");
+    setPasswordError("");
+
     try {
       const response = await axios.post('http://localhost:8000/api/login/', {
         username,
@@ -23,21 +26,31 @@ const Log = ({ setAuthenticate }) => {
         }
       });
 
-      if (response.data.User) {
-        setUserError("User not found");
-      } else if (response.data.Pass) {
-        setPasswordError("Incorrect Password");
-      } else if (response.data.Success) {
+      if (response.data.Success) {
         setUserID(response.data.UserID);
         setAuthenticate(true);
         navigate('/home');
       }
 
-    } catch(error) {
-      alert("Invalid Credentials")
+    } catch (error) {
+      // Handle unexpected errors
+      if (error.response) {
+        const errorData = error.response.data;
+        if (errorData.User) {
+          setUserError("Username not found");
+        } else if (errorData.Pass) {
+          setPasswordError("Incorrect Password");
+        } else if (errorData.Invalid) {
+          alert('Username and Password required');
+        } else {
+          alert("Failed to log in");
+        }
+      } else {
+        console.error("Error logging in:", error);
+        alert("An unexpected error occurred");
+      }
     }
   };
-
 
   return (
     <section className="login-section">

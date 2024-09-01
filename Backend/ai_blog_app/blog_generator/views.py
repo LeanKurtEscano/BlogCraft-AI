@@ -57,11 +57,9 @@ def login(request):
         print("Username:", username)
         print("Password:", password)
         
-        # Check if user exists
-        user_exists = User.objects.filter(username=username).exists()
-        if not user_exists:
-            return JsonResponse({"User": "Username not found"}, status=404)
-        
+        if not username or not password:
+            return JsonResponse({"Invalid": "Username and password are required"}, status=400)
+
         # Authenticate user
         user = authenticate(request, username=username, password=password)
         
@@ -70,8 +68,12 @@ def login(request):
             user_id = get_user_id.id
             return JsonResponse({'Success': "Credentials are valid", "UserID": user_id}, status=200)
         else:
-            print(f"Failed authentication attempt for user: {username}")
-            return JsonResponse({'Pass': 'Invalid password'}, status=400)
+            user_exists = User.objects.filter(username = username).exists()
+            if user_exists:
+                return JsonResponse({"Pass": "Incorrect Password"}, status = 400)
+            else:
+                return JsonResponse({"User": "Username not found"},status = 400)
+            
         
     except Exception as e:
         print(f"Response failed: {e}")

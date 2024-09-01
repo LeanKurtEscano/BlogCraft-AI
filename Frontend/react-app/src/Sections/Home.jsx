@@ -36,11 +36,8 @@ const Home = ({isAuthenticate}) => {
       // Check if the response contains the article and update the state
       if(response.data.article){
         setContent(response.data.article);
-        setInvalid('');
+       
         setTopic('');
-        setTone('');
-        setStyle('');
-        setComplexity('');
       } else {
         setInvalid('Failed to generate the article. Please try again.');
       }
