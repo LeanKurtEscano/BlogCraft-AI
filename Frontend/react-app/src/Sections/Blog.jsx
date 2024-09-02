@@ -1,17 +1,14 @@
-
-
 import { useState, useEffect, useContext } from 'react';
 import '../styles/Blog.css';
 import axios from 'axios';
 import { MyContext } from './MyContext';
 
 const Blog = ({ isAuthenticate }) => {
-    const [ blogs, setBlogs] = useState([]);
+    const [blogs, setBlogs] = useState([]);
     const { userid } = useContext(MyContext);
-    const [success, setSuccess] = useState(false);
 
     const fetchBlogs = async () => {
-        const accessToken = localStorage.getItem('access_token')
+        const accessToken = localStorage.getItem("access_token");
         try {
             const response = await axios.post('http://localhost:8000/api/blogdetails/', {
                 userid,
@@ -19,11 +16,12 @@ const Blog = ({ isAuthenticate }) => {
                 headers: {
                     'Authorization': `Bearer ${accessToken}`,
                     'Content-Type': 'application/json'
-                   
                 }
             });
 
             setBlogs(response.data);
+            localStorage.setItem('blog', JSON.stringify(response.data));
+
             console.log(response.data); 
         } catch (error) {
             console.error('Failed to fetch blogs:', error);
@@ -31,26 +29,36 @@ const Blog = ({ isAuthenticate }) => {
     };
 
     useEffect(() => {
-        if (userid && isAuthenticate) {
+        const storedBlogs = localStorage.getItem('blog');
+        const accessToken = localStorage.getItem('access_token');
+
+        if (userid && isAuthenticate && accessToken) {
             fetchBlogs();
+        } else if (storedBlogs) {
+            setBlogs(JSON.parse(storedBlogs));
         } else {
-            setBlogs([]); // Clear blogs if not authenticated
+            setBlogs([]);
         }
     }, [userid, isAuthenticate]);
 
     const deleteBlog = async (blogID) => {
+        const accessToken = localStorage.getItem('access_token');
         try {
             const response = await axios.post('http://localhost:8000/api/deleteblog/', {
                 blogid: blogID,
                 userid
             }, {
                 headers: {
+                    "Authorization": `Bearer ${accessToken}`,
                     "Content-Type": "application/json"
                 }
             });
 
             if (response.status === 200) {
-                setBlogs(blogs.filter(blog => blog.id !== blogID)); // Remove deleted blog from state
+                // Remove deleted blog from state and localStorage
+                const updatedBlogs = blogs.filter(blog => blog.id !== blogID);
+                setBlogs(updatedBlogs);
+                localStorage.setItem('blog', JSON.stringify(updatedBlogs));
             }
 
         } catch (error) {

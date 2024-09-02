@@ -5,12 +5,14 @@ import axios from 'axios';
 import logo2 from '../assets/logo2.png';
 const Nav = ({ isAuthenticate, setAuthenticate }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const navigate = useNavigate(); // To redirect after logout
+  const navigate = useNavigate(); 
 
   const userLogout = async () => {
+    const accessToken = localStorage.getItem('access_token');
     try {
       const response = await axios.post('http://localhost:8000/api/logout/', {}, {
         headers: {
+          'Authorization': `Bearer ${accessToken}`,
           'Content-Type': 'application/json'
         }
       });
@@ -19,6 +21,7 @@ const Nav = ({ isAuthenticate, setAuthenticate }) => {
         setAuthenticate(false);
         localStorage.removeItem('access_token');
         localStorage.removeItem('refresh_token');
+        localStorage.removeItem('blog');
         navigate('/'); 
       } else {
         console.error('Logout failed:', response.data.Error);

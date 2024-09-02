@@ -1,21 +1,166 @@
 import json
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
-from django.contrib.auth import login,authenticate,logout
+from django.contrib.auth import authenticate,logout
 from django.contrib.auth.models import User 
 from django.contrib.auth.hashers import make_password
 from blog_generator.models import BlogArticle
 from langchain_core.prompts import PromptTemplate
 import google.generativeai as genai
-from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes
 
 
+@api_view(["POST"])
+@permission_classes([IsAuthenticated])
+def generate_blog(request):
+    try:
+        data = json.loads(request.body)
+        tone = data.get('tone')
+        print(tone)
+        topic = data.get('topic')
+        print(topic)
+        style = data.get('style')
+        print(style)
+        complexity = data.get('complexity')
+        print(complexity)
+        username  = data.get('username')
+        print(username)
+
+        # Validate input
+        if not all([tone, topic, style, complexity]):
+            return JsonResponse({'missing': 'Missing required fields in request.'}, status=400)
+        
+        
+        prompt = create_prompt(tone, topic, style, complexity)
+        print("Successfully Created Prompt")
+       
+        # Create the model
+        
+        genai.configure(api_key="")
+        generation_config = {
+            "temperature": 1,
+            "top_p": 0.95,
+            "top_k": 64,
+            "max_output_tokens": 8192,
+            "response_mime_type": "text/plain",
+        }
+        
+        model = genai.GenerativeModel(
+            model_name="gemini-1.5-flash",
+            generation_config=generation_config,
+            # safety_settings = Adjust safety settings
+            # See https://ai.google.dev/gemini-api/docs/safety-settings
+        )
+
+        chat_session = model.start_chat(
+            history=[
+                # History can be included here if needed
+            ]
+        )
+
+        response = chat_session.send_message(prompt)
+        
+        
+               
+        user = User.objects.get(username = username)
+        
+        blog_article = BlogArticle.objects.create(  
+              user = user,
+              topic = topic,
+              tone = tone,
+              style = style,
+              complexity = complexity,
+              content = response.text
+           )           
+           
+        return JsonResponse({'article': response.text})
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
 
 
+@api_view(['POST'])
+def blog_details(request):
+    if request.method != 'POST':
+        return JsonResponse({"error": "Invalid request method"}, status=405)
+    
+    try:
+        data = json.loads(request.body)
+        userid = data.get('userid')
+        
+        if not userid:
+            return JsonResponse({"error": "User ID is required"}, status=400)
+        
+        try:
+            int_id = int(userid)
+        except ValueError:
+            return JsonResponse({"error": "Invalid User ID format"}, status=400)
+        
+        blog_details = BlogArticle.objects.filter(user_id=int_id)
+        
+        if not blog_details.exists():
+            return JsonResponse({"error": "No blog posts found for this user"}, status=404)
+        blog_list = []
+        for blog in blog_details:
+            content = {
+                "id" : blog.id,
+                "topic": blog.topic,
+                "tone": blog.tone,
+                "style": blog.style,
+                "complexity": blog.complexity,
+                "content": blog.content
+            }
+            blog_list.append(content)
+        
+        return JsonResponse(blog_list, safe=False)
+
+    except Exception as e:
+        print(f"Error: {e}")
+        return JsonResponse({"error": "Internal Server Error"}, status=500)
+    
+
+@api_view(["POST"])
+@permission_classes([IsAuthenticated])
+def log_out(request):
+    if request.method == 'POST':
+        logout(request)
+        return JsonResponse({'Success': 'Logged out successfully'})
+    return JsonResponse({'Error': 'Invalid request method'}, status=405)
 
 
+@api_view(["POST"])
+@permission_classes([IsAuthenticated])
+def delete_blog(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        blog_id = data.get('blogid')
+        user_id = data.get('userid')
+        print(blog_id)
+
+      
+        try:
+            int_blog = int(blog_id)
+            int_user = int(user_id)
+        except (ValueError, TypeError):
+            return JsonResponse({'error': 'Invalid blog ID or user ID'}, status=400)
+
+    
+        if not int_blog or not user_id:
+            return JsonResponse({'error': 'Missing blog ID or user ID'}, status=400)
+
+        try:
+          
+            blog_post = BlogArticle.objects.get(id=int_blog, user_id=int_user)
+            blog_post.delete()
+            return JsonResponse({'Success': 'Successfully deleted content'}, status=200)
+
+        except:
+            
+            return JsonResponse({'error': 'Blog post not found or not authorized'}, status=404)
+
+    else:
+    
+        return JsonResponse({'error': 'Invalid request method'}, status=405)
     
 @csrf_exempt
 def signup(request):
@@ -86,11 +231,6 @@ def login(request):
         print(f"Response failed: {e}")
         return JsonResponse({"Error": "Internal Server Error"}, status=500)
     
-
-
-
-
-
 def create_prompt(tone, topic, style, complexity):
     template = """
     You are a technical copywriter fluent in all subjects. You are developing a blog article about "{topic}" with a "{tone}" tone.
@@ -111,151 +251,4 @@ def create_prompt(tone, topic, style, complexity):
     
     print("Succesfully Created Prompt")
     
-    return formatted_prompt
-
-@csrf_exempt
-def generate_blog(request):
-    try:
-        data = json.loads(request.body)
-        tone = data.get('tone')
-        print(tone)
-        topic = data.get('topic')
-        print(topic)
-        style = data.get('style')
-        print(style)
-        complexity = data.get('complexity')
-        print(complexity)
-        username  = data.get('username')
-        print(username)
-
-        # Validate input
-        if not all([tone, topic, style, complexity]):
-            return JsonResponse({'missing': 'Missing required fields in request.'}, status=400)
-        
-        
-        prompt = create_prompt(tone, topic, style, complexity)
-        print("Successfully Created Prompt")
-       
-        # Create the model
-        
-        genai.configure(api_key="")
-        generation_config = {
-            "temperature": 1,
-            "top_p": 0.95,
-            "top_k": 64,
-            "max_output_tokens": 8192,
-            "response_mime_type": "text/plain",
-        }
-        
-        model = genai.GenerativeModel(
-            model_name="gemini-1.5-flash",
-            generation_config=generation_config,
-            # safety_settings = Adjust safety settings
-            # See https://ai.google.dev/gemini-api/docs/safety-settings
-        )
-
-        chat_session = model.start_chat(
-            history=[
-                # History can be included here if needed
-            ]
-        )
-
-        response = chat_session.send_message(prompt)
-        
-        
-               
-        user = User.objects.get(username = username)
-        
-        blog_article = BlogArticle.objects.create(  
-              user = user,
-              topic = topic,
-              tone = tone,
-              style = style,
-              complexity = complexity,
-              content = response.text
-           )           
-           
-        return JsonResponse({'article': response.text})
-    except Exception as e:
-        return JsonResponse({'error': str(e)}, status=500)
-
-
-@api_view(['POST'])
-@permission_classes([IsAuthenticated])
-def blog_details(request):
-    if request.method != 'POST':
-        return JsonResponse({"error": "Invalid request method"}, status=405)
-
-    try:
-        data = json.loads(request.body)
-        userid = data.get('userid')
-        
-        if not userid:
-            return JsonResponse({"error": "User ID is required"}, status=400)
-        
-        try:
-            int_id = int(userid)
-        except ValueError:
-            return JsonResponse({"error": "Invalid User ID format"}, status=400)
-        
-        blog_details = BlogArticle.objects.filter(user_id=int_id)
-        
-        if not blog_details.exists():
-            return JsonResponse({"error": "No blog posts found for this user"}, status=404)
-        blog_list = []
-        for blog in blog_details:
-            content = {
-                "id" : blog.id,
-                "topic": blog.topic,
-                "tone": blog.tone,
-                "style": blog.style,
-                "complexity": blog.complexity,
-                "content": blog.content
-            }
-            blog_list.append(content)
-        
-        return JsonResponse(blog_list, safe=False)
-
-    except Exception as e:
-        print(f"Error: {e}")
-        return JsonResponse({"error": "Internal Server Error"}, status=500)
-
-@csrf_exempt
-def log_out(request):
-    if request.method == 'POST':
-        logout(request)
-        return JsonResponse({'Success': 'Logged out successfully'})
-    return JsonResponse({'Error': 'Invalid request method'}, status=405)
-
-@csrf_exempt
-def delete_blog(request):
-    if request.method == "POST":
-        data = json.loads(request.body)
-        blog_id = data.get('blogid')
-        user_id = data.get('userid')
-        print(blog_id)
-
-      
-        try:
-            int_blog = int(blog_id)
-            int_user = int(user_id)
-        except (ValueError, TypeError):
-            return JsonResponse({'error': 'Invalid blog ID or user ID'}, status=400)
-
-    
-        if not int_blog or not user_id:
-            return JsonResponse({'error': 'Missing blog ID or user ID'}, status=400)
-
-        try:
-          
-            blog_post = BlogArticle.objects.get(id=int_blog, user_id=int_user)
-            blog_post.delete()
-            return JsonResponse({'Success': 'Successfully deleted content'}, status=200)
-
-        except:
-            
-            return JsonResponse({'error': 'Blog post not found or not authorized'}, status=404)
-
-    else:
-    
-        return JsonResponse({'error': 'Invalid request method'}, status=405)
+    return formatted_prompt   

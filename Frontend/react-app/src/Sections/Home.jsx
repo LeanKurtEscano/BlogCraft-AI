@@ -18,6 +18,8 @@ const Home = ({isAuthenticate}) => {
   const sendContent = async (e) => {
     setLoading(true);
     e.preventDefault();
+
+    const accessToken = localStorage.getItem('access_token');
     try {
       const response = await axios.post('http://localhost:8000/api/send/', {
         topic,
@@ -27,13 +29,13 @@ const Home = ({isAuthenticate}) => {
         username
       }, {
         headers: {
+          "Authorization": `Bearer ${accessToken}`,
           "Content-Type": "application/json"
         }
       });
   
       console.log('Server response:', response.data); 
       
-      // Check if the response contains the article and update the state
       if(response.data.article){
         setContent(response.data.article);
        
