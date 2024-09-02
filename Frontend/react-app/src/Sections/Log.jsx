@@ -15,7 +15,7 @@ const Log = ({ setAuthenticate }) => {
     e.preventDefault();
     setUserError("");
     setPasswordError("");
-
+    
     try {
       // Send POST request to obtain JWT token
       const response = await axios.post('http://localhost:8000/api/token/', {
@@ -44,7 +44,7 @@ const Log = ({ setAuthenticate }) => {
         setAuthenticate(true);
         navigate('/home');
       } else {
-        alert("Failed to Login");
+        alert("Invalid Credentials");
       }
 
     } catch (error) {

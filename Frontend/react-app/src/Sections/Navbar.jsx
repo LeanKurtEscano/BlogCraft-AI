@@ -16,6 +16,7 @@ const Nav = ({ isAuthenticate, setAuthenticate }) => {
       });
 
       if (response.data.Success) {
+        setAuthenticate(false);
         localStorage.removeItem('access_token');
         localStorage.removeItem('refresh_token');
         navigate('/'); 
