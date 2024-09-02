@@ -17,7 +17,8 @@ const Log = ({ setAuthenticate }) => {
     setPasswordError("");
 
     try {
-      const response = await axios.post('http://localhost:8000/api/login/', {
+      // Send POST request to obtain JWT token
+      const response = await axios.post('http://localhost:8000/api/token/', {
         username,
         password
       }, {
@@ -26,10 +27,24 @@ const Log = ({ setAuthenticate }) => {
         }
       });
 
-      if (response.data.Success) {
-        setUserID(response.data.UserID);
+      const { access, refresh } = response.data;
+
+      if (access) {
+        const newResponse = await axios.post('http://localhost:8000/api/login/', {
+          username,
+          password
+        }, {
+          headers: {
+            "Content-Type": 'application/json'
+          }
+        })
+        setUserID(newResponse.data.UserID);
+        localStorage.setItem('access_token', access);
+        localStorage.setItem('refresh_token', refresh);
         setAuthenticate(true);
         navigate('/home');
+      } else {
+        alert("Failed to Login");
       }
 
     } catch (error) {

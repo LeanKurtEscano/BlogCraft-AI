@@ -7,7 +7,7 @@ const Nav = ({ isAuthenticate, setAuthenticate }) => {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate(); // To redirect after logout
 
-  const user_logout = async () => {
+  const userLogout = async () => {
     try {
       const response = await axios.post('http://localhost:8000/api/logout/', {}, {
         headers: {
@@ -16,8 +16,8 @@ const Nav = ({ isAuthenticate, setAuthenticate }) => {
       });
 
       if (response.data.Success) {
-        setAuthenticate(false);
-        localStorage.removeItem('username');
+        localStorage.removeItem('access_token');
+        localStorage.removeItem('refresh_token');
         navigate('/'); 
       } else {
         console.error('Logout failed:', response.data.Error);
@@ -57,7 +57,7 @@ const Nav = ({ isAuthenticate, setAuthenticate }) => {
             </li>
             {isAuthenticate ? (
               <li className='nav-item'>
-                <button onClick={user_logout} className='logout-button'>
+                <button onClick={userLogout} className='logout-button'>
                   Logout
                 </button>
               </li>

@@ -5,12 +5,18 @@ from django.contrib.auth import login,authenticate,logout
 from django.contrib.auth.models import User 
 from django.contrib.auth.hashers import make_password
 from blog_generator.models import BlogArticle
-from django.conf import settings
 from langchain_core.prompts import PromptTemplate
 import google.generativeai as genai
-from django.contrib.auth.decorators import login_required
+from rest_framework import generics
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import api_view, permission_classes
 
 
+
+
+
+
+    
 @csrf_exempt
 def signup(request):
     if request.method == "POST":
@@ -65,7 +71,8 @@ def login(request):
         
         if user is not None:
             get_user_id = User.objects.get(username=username)
-            user_id = get_user_id.id
+    
+            user_id = get_user_id.id    
             return JsonResponse({'Success': "Credentials are valid", "UserID": user_id}, status=200)
         else:
             user_exists = User.objects.filter(username = username).exists()
@@ -173,7 +180,8 @@ def generate_blog(request):
         return JsonResponse({'error': str(e)}, status=500)
 
 
-@csrf_exempt
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def blog_details(request):
     if request.method != 'POST':
         return JsonResponse({"error": "Invalid request method"}, status=405)

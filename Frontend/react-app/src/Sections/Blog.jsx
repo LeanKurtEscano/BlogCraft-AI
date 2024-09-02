@@ -11,12 +11,15 @@ const Blog = ({ isAuthenticate }) => {
     const [success, setSuccess] = useState(false);
 
     const fetchBlogs = async () => {
+        const accessToken = localStorage.getItem('access_token')
         try {
             const response = await axios.post('http://localhost:8000/api/blogdetails/', {
                 userid,
             }, {
                 headers: {
+                    'Authorization': `Bearer ${accessToken}`,
                     'Content-Type': 'application/json'
+                   
                 }
             });
 

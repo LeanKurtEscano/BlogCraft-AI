@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import Nav from './Sections/Navbar';
 import Home from './Sections/Home';
 import Log from './Sections/Log';
@@ -12,6 +12,16 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 function App() {
 
   const [isAuthenticate, setAuthenticate] = useState(false);
+
+  useEffect(() => {
+    const accessToken = localStorage.getItem('access_token');
+    if (accessToken) {
+      setAuthenticate(true);
+    } else {
+      setAuthenticate(false);
+      
+    }
+  }, []);
   return (
     <MyContextProvider>
     <main>

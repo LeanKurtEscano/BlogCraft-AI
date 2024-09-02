@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
+from datetime import timedelta
+
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -23,6 +26,23 @@ SECRET_KEY = 'django-insecure-bt=-%$%vzter3qw%o#h-&)k$)(ms58br=s009^86zbv+4ud)ol
 
 DEBUG = True
 
+ALLOWED_HOST = [
+    "*"
+]
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ),
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.IsAuthenticated",
+    ],
+}
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=50),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+}
 
 
 # Application definition
@@ -34,7 +54,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'blog_generator'
+    'blog_generator',
+    "rest_framework"
 ]
 
 MIDDLEWARE = [
@@ -50,6 +71,7 @@ MIDDLEWARE = [
 
 # CORS configuration
 CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOWS_CREDENTIALS = True
 # If using a specific list of allowed origins, uncomment the following:
 # CORS_ALLOWED_ORIGINS = [
 #     "http://localhost:5173",
