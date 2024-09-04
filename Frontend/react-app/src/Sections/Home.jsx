@@ -126,6 +126,7 @@ const Home = ({isAuthenticate}) => {
         {content && (
           <div className='generated-container'>
           <p>{content}</p>
+          <p>dsds</p>
         </div>
         )}
       </div>
