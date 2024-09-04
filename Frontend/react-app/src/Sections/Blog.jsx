@@ -5,8 +5,18 @@ import { MyContext } from './MyContext';
 
 const Blog = ({ isAuthenticate }) => {
     const [ blogs, setBlogs] = useState([]);
-    const { userid } = useContext(MyContext);
-    const [success, setSuccess] = useState(false);
+    const { userid, setUserID } = useContext(MyContext);
+
+    useEffect(() => {
+        if (!userid) {
+            const storedUserID = localStorage.getItem('userid');
+            console.log(userid);
+            if (storedUserID) {
+                const parseStored = JSON.parse(storedUserID);
+                setUserID(parseStored);
+            } 
+        }
+    }, [userid, setUserID]);
 
     const fetchBlogs = async () => {
         const accessToken = localStorage.getItem('access_token')
@@ -50,9 +60,16 @@ const Blog = ({ isAuthenticate }) => {
             });
 
             if (response.status === 200) {
-                setBlogs(blogs.filter(blog => blog.id !== blogID)); // Remove deleted blog from state
-            }
+                setBlogs(blogs.filter(blog => blog.id !== blogID));
+                const getStored = localStorage.getItem('blogs');
+                if(getStored) {
+                    const parseBlogs = JSON.parse(getStored);
+                    const filterBlogs = parseBlogs.filter(blog => blog.id !== blogID);
+                    localStorage.setItem('blogs', JSON.stringify(filterBlogs));
 
+                }
+                 
+            }
         } catch (error) {
             console.error('Failed to delete blog:', error);
         }
