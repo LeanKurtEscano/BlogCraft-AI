@@ -5,7 +5,7 @@ import { MyContext } from './MyContext';
 
 const Blog = ({ isAuthenticate }) => {
     const [blogs, setBlogs] = useState([]);
-    const { userid } = useContext(MyContext);
+    const { userid, setUserID } = useContext(MyContext);
 
     const fetchBlogs = async () => {
         const accessToken = localStorage.getItem("access_token");
@@ -43,6 +43,7 @@ const Blog = ({ isAuthenticate }) => {
 
     const deleteBlog = async (blogID) => {
         const accessToken = localStorage.getItem('access_token');
+
         try {
             const response = await axios.post('http://localhost:8000/api/deleteblog/', {
                 blogid: blogID,

@@ -13,14 +13,17 @@ const Home = ({isAuthenticate}) => {
   const [content, setContent] = useState('');
   const [invalid, setInvalid] = useState('');
   const [missing, setMissing] = useState('');
-  const { username, setUsername } = useContext(MyContext);
+  const { username, setUserName,userid,setUserID } = useContext(MyContext);
 
   const sendContent = async (e) => {
     setLoading(true);
     e.preventDefault();
 
     const accessToken = localStorage.getItem('access_token');
+
     try {
+
+
       const response = await axios.post('http://localhost:8000/api/send/', {
         topic,
         style,
@@ -33,8 +36,8 @@ const Home = ({isAuthenticate}) => {
           "Content-Type": "application/json"
         }
       });
-  
-      console.log('Server response:', response.data); 
+
+      localStorage.setItem('username',username)
       
       if(response.data.article){
         setContent(response.data.article);
