@@ -21,6 +21,9 @@ const Nav = ({ isAuthenticate, setAuthenticate }) => {
         setAuthenticate(false);
         localStorage.removeItem('access_token');
         localStorage.removeItem('refresh_token');
+        localStorage.removeItem('blogs');
+        localStorage.removeItem('userid');
+        localStorage.removeItem('username');
         navigate('/'); 
       } else {
         console.error('Logout failed:', response.data.Error);

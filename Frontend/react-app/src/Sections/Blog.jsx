@@ -7,17 +7,18 @@ const Blog = ({ isAuthenticate }) => {
     const [ blogs, setBlogs] = useState([]);
     const { userid, setUserID } = useContext(MyContext);
 
+
     useEffect(() => {
         if (!userid) {
             const storedUserID = localStorage.getItem('userid');
-            console.log(userid);
             if (storedUserID) {
                 const parseStored = JSON.parse(storedUserID);
                 setUserID(parseStored);
-            } 
+            }
         }
     }, [userid, setUserID]);
 
+ 
     const fetchBlogs = async () => {
         const accessToken = localStorage.getItem('access_token')
         try {
@@ -31,6 +32,7 @@ const Blog = ({ isAuthenticate }) => {
             });
 
             setBlogs(response.data);
+            localStorage.setItem('blogs', blogs);
             console.log(response.data); 
         } catch (error) {
             console.error('Failed to fetch blogs:', error);
@@ -38,10 +40,15 @@ const Blog = ({ isAuthenticate }) => {
     };
 
     useEffect(() => {
-        if (userid && isAuthenticate) {
+        const storedBlogs = localStorage.getItem('blogs');
+        const accessToken = localStorage.getItem('access_token');
+
+        if (userid && isAuthenticate && accessToken) {
             fetchBlogs();
+        } else if (storedBlogs) {
+            setBlogs(JSON.parse(storedBlogs)); 
         } else {
-            setBlogs([]); // Clear blogs if not authenticated
+            setBlogs([])
         }
     }, [userid, isAuthenticate]);
 
@@ -60,8 +67,10 @@ const Blog = ({ isAuthenticate }) => {
             });
 
             if (response.status === 200) {
+
                 setBlogs(blogs.filter(blog => blog.id !== blogID));
                 const getStored = localStorage.getItem('blogs');
+
                 if(getStored) {
                     const parseBlogs = JSON.parse(getStored);
                     const filterBlogs = parseBlogs.filter(blog => blog.id !== blogID);

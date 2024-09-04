@@ -13,11 +13,22 @@ const Home = ({isAuthenticate}) => {
   const [content, setContent] = useState('');
   const [invalid, setInvalid] = useState('');
   const [missing, setMissing] = useState('');
-  const { username, setUsername } = useContext(MyContext);
+  const { username, setUserName } = useContext(MyContext);
 
   const sendContent = async (e) => {
     setLoading(true);
     e.preventDefault();
+
+    useEffect(() =>{
+      if(!username) {
+        const refreshUser = localStorage.getItem('username');
+
+        if (refreshUser) {
+          setUserName(refreshUser);
+        }
+
+      }
+    },[username, setUserName])
 
     const accessToken = localStorage.getItem('access_token');
 
