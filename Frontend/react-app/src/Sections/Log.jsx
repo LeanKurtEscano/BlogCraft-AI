@@ -39,9 +39,9 @@ const Log = ({ setAuthenticate }) => {
           }
         })
         setUserID(newResponse.data.UserID);
+        console.log(userid);
         localStorage.setItem('access_token', access);
         localStorage.setItem('refresh_token', refresh);
-        localStorage.setItem('userid', userid);
         setAuthenticate(true);
         navigate('/home');
       } else {

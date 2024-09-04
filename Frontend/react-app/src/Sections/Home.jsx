@@ -1,4 +1,4 @@
-import React, { useState,useContext } from 'react';
+import { useState,useContext, useEffect } from 'react';
 import '../styles/Home.css';
 import axios from 'axios';
 import { MyContext } from './MyContext';
@@ -13,7 +13,7 @@ const Home = ({isAuthenticate}) => {
   const [content, setContent] = useState('');
   const [invalid, setInvalid] = useState('');
   const [missing, setMissing] = useState('');
-  const { username, setUserName,userid,setUserID } = useContext(MyContext);
+  const { username, setUsername } = useContext(MyContext);
 
   const sendContent = async (e) => {
     setLoading(true);
