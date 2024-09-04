@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import '../styles/Nav.css';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import logo2 from '../assets/logo2.png';
+
 const Nav = ({ isAuthenticate, setAuthenticate }) => {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate(); 

@@ -15,25 +15,23 @@ const Home = ({isAuthenticate}) => {
   const [missing, setMissing] = useState('');
   const { username, setUserName } = useContext(MyContext);
 
+  useEffect(() =>{
+    if(!username) {
+      const refreshUser = localStorage.getItem('username');
+
+      if (refreshUser) {
+        setUserName(refreshUser);
+      }
+
+    }
+  },[username, setUserName])
+
   const sendContent = async (e) => {
     setLoading(true);
     e.preventDefault();
 
-    useEffect(() =>{
-      if(!username) {
-        const refreshUser = localStorage.getItem('username');
-
-        if (refreshUser) {
-          setUserName(refreshUser);
-        }
-
-      }
-    },[username, setUserName])
-
     const accessToken = localStorage.getItem('access_token');
-
     try {
-
 
       const response = await axios.post('http://localhost:8000/api/send/', {
         topic,
@@ -48,7 +46,7 @@ const Home = ({isAuthenticate}) => {
         }
       });
 
-      localStorage.setItem('username',username)
+      localStorage.setItem('username',username);
       
       if(response.data.article){
         setContent(response.data.article);

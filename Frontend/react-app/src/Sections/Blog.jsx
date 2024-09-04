@@ -3,10 +3,10 @@ import '../styles/Blog.css';
 import axios from 'axios';
 import { MyContext } from './MyContext';
 
+
 const Blog = ({ isAuthenticate }) => {
     const [ blogs, setBlogs] = useState([]);
     const { userid, setUserID } = useContext(MyContext);
-
 
     useEffect(() => {
         if (!userid) {
@@ -17,8 +17,8 @@ const Blog = ({ isAuthenticate }) => {
             }
         }
     }, [userid, setUserID]);
+    
 
- 
     const fetchBlogs = async () => {
         const accessToken = localStorage.getItem('access_token')
         try {
@@ -34,23 +34,12 @@ const Blog = ({ isAuthenticate }) => {
             setBlogs(response.data);
             localStorage.setItem('blogs', blogs);
             console.log(response.data); 
+            console.log(response.data); 
         } catch (error) {
             console.error('Failed to fetch blogs:', error);
         }
     };
 
-    useEffect(() => {
-        const storedBlogs = localStorage.getItem('blogs');
-        const accessToken = localStorage.getItem('access_token');
-
-        if (userid && isAuthenticate && accessToken) {
-            fetchBlogs();
-        } else if (storedBlogs) {
-            setBlogs(JSON.parse(storedBlogs)); 
-        } else {
-            setBlogs([])
-        }
-    }, [userid, isAuthenticate]);
 
     const deleteBlog = async (blogID) => {
         const accessToken = localStorage.getItem('access_token');
@@ -68,13 +57,16 @@ const Blog = ({ isAuthenticate }) => {
 
             if (response.status === 200) {
 
-                setBlogs(blogs.filter(blog => blog.id !== blogID));
+                const updatedBlogs = blogs.filter(blog => blog.id !== blogID);
+                setBlogs(updatedBlogs);
+
                 const getStored = localStorage.getItem('blogs');
 
                 if(getStored) {
                     const parseBlogs = JSON.parse(getStored);
-                    const filterBlogs = parseBlogs.filter(blog => blog.id !== blogID);
-                    localStorage.setItem('blogs', JSON.stringify(filterBlogs));
+
+                    const updateStoredBlogs = parseBlogs.filter(blog => blog.id !== blogID);
+                    localStorage.setItem('blogs', JSON.stringify(updateStoredBlogs));
 
                 }
                  
