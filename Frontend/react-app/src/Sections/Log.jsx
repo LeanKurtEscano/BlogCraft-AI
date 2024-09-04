@@ -5,7 +5,7 @@ import axios from 'axios';
 import { MyContext } from './MyContext';
 
 const Log = ({ setAuthenticate }) => {
-  const { username, setUserName, setUserID } = useContext(MyContext);
+  const { username, setUserName, userid, setUserID } = useContext(MyContext);
   const [password, setPassword] = useState("");
   const [userError, setUserError] = useState("");
   const [passwordError, setPasswordError] = useState("");
@@ -39,8 +39,11 @@ const Log = ({ setAuthenticate }) => {
           }
         })
         setUserID(newResponse.data.UserID);
+        console.log(userid);
         localStorage.setItem('access_token', access);
         localStorage.setItem('refresh_token', refresh);
+        localStorage.setItem('userid', userid);
+        localStorage.setItem('username',username);
         setAuthenticate(true);
         navigate('/home');
       } else {

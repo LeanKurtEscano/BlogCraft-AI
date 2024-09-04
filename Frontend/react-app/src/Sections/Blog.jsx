@@ -7,11 +7,22 @@ import { MyContext } from './MyContext';
 
 const Blog = ({ isAuthenticate }) => {
     const [ blogs, setBlogs] = useState([]);
-    const { userid } = useContext(MyContext);
-    const [success, setSuccess] = useState(false);
+    const { userid, setUserID } = useContext(MyContext);
+
+    useEffect(() => {
+        if (!userid) {
+            const storedUserID = localStorage.getItem('userid');
+            console.log(userid);
+            if (storedUserID) {
+                const parseStored = JSON.parse(storedUserID);
+                setUserID(parseStored);
+               
+            } 
+        }
+    }, [userid, setUserID]);
 
     const fetchBlogs = async () => {
-        const accessToken = localStorage.getItem('access_token')
+        const accessToken = localStorage.getItem('access_token');
         try {
             const response = await axios.post('http://localhost:8000/api/blogdetails/', {
                 userid,
@@ -24,19 +35,13 @@ const Blog = ({ isAuthenticate }) => {
             });
 
             setBlogs(response.data);
+            localStorage.setItem('blogs', JSON.stringify(response.data));
             console.log(response.data); 
         } catch (error) {
             console.error('Failed to fetch blogs:', error);
         }
     };
 
-    useEffect(() => {
-        if (userid && isAuthenticate) {
-            fetchBlogs();
-        } else {
-            setBlogs([]); // Clear blogs if not authenticated
-        }
-    }, [userid, isAuthenticate]);
 
     const deleteBlog = async (blogID) => {
         try {
@@ -50,13 +55,37 @@ const Blog = ({ isAuthenticate }) => {
             });
 
             if (response.status === 200) {
-                setBlogs(blogs.filter(blog => blog.id !== blogID)); // Remove deleted blog from state
+                setBlogs(blogs.filter(blog => blog.id !== blogID));
+
+                const getStored = localStorage.getItem('blogs');
+                
+                if(getStored) {
+                    const parseBlogs = JSON.parse(getStored);
+                    const filterBlogs = parseBlogs.filter(blog => blog.id !== blogID);
+                    localStorage.setItem('blogs', JSON.stringify(filterBlogs));
+
+                }
+                 
             }
 
         } catch (error) {
             console.error('Failed to delete blog:', error);
         }
     };
+
+    useEffect(() => {
+        const storedBlogs = localStorage.getItem('blogs');
+        const accessToken = localStorage.getItem('access_token');
+
+        if (userid && isAuthenticate && accessToken) {
+            fetchBlogs();
+        } else if (storedBlogs){
+            setBlogs(JSON.parse(storedBlogs)); 
+        } else {
+            setBlogs([]); 
+
+        }
+    }, [userid, isAuthenticate]);
 
     return (
         <section className='blog-page'>

@@ -18,6 +18,10 @@ const Nav = ({ isAuthenticate, setAuthenticate }) => {
       if (response.data.Success) {
         localStorage.removeItem('access_token');
         localStorage.removeItem('refresh_token');
+        localStorage.removeItem('userid');
+        localStorage.removeItem('blogs');
+        localStorage.removeItem('username');
+        setAuthenticate(false);
         navigate('/'); 
       } else {
         console.error('Logout failed:', response.data.Error);

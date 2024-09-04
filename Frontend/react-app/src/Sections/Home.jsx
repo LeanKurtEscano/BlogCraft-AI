@@ -1,4 +1,4 @@
-import React, { useState,useContext } from 'react';
+import { useState,useContext, useEffect } from 'react';
 import '../styles/Home.css';
 import axios from 'axios';
 import { MyContext } from './MyContext';
@@ -13,7 +13,19 @@ const Home = ({isAuthenticate}) => {
   const [content, setContent] = useState('');
   const [invalid, setInvalid] = useState('');
   const [missing, setMissing] = useState('');
-  const { username, setUsername } = useContext(MyContext);
+  const { username, setUserName } = useContext(MyContext);
+
+  useEffect(() => {
+    if(!username) {
+      const refreshName = localStorage.getItem('username');
+
+      if (refreshName) {
+        setUserName(refreshName);
+      }
+    }
+    
+  
+  },[username, setUserName]);
 
   const sendContent = async (e) => {
     setLoading(true);
