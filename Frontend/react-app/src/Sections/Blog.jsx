@@ -16,7 +16,6 @@ const Blog = ({ isAuthenticate }) => {
             if (storedUserID) {
                 const parseStored = JSON.parse(storedUserID);
                 setUserID(parseStored);
-               
             } 
         }
     }, [userid, setUserID]);
@@ -56,9 +55,7 @@ const Blog = ({ isAuthenticate }) => {
 
             if (response.status === 200) {
                 setBlogs(blogs.filter(blog => blog.id !== blogID));
-
                 const getStored = localStorage.getItem('blogs');
-                
                 if(getStored) {
                     const parseBlogs = JSON.parse(getStored);
                     const filterBlogs = parseBlogs.filter(blog => blog.id !== blogID);
@@ -67,7 +64,6 @@ const Blog = ({ isAuthenticate }) => {
                 }
                  
             }
-
         } catch (error) {
             console.error('Failed to delete blog:', error);
         }
