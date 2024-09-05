@@ -2,6 +2,10 @@ import { useState, useContext } from 'react';
 import '../styles/Login.css';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+
 import { MyContext } from './MyContext';
 
 const Log = ({ setAuthenticate }) => {
@@ -9,16 +13,20 @@ const Log = ({ setAuthenticate }) => {
   const [password, setPassword] = useState("");
   const [userError, setUserError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [show, setShow] = useState(false);
   const navigate = useNavigate();
+
+  const showPassword = () => {
+    setShow(!show);
+  }
 
   const handleForm = async (e) => {
     e.preventDefault();
     setUserError("");
     setPasswordError("");
-    
+
     try {
-      // Send POST request to obtain JWT token
-      const response = await axios.post('http://localhost:8000/api/token/', {
+      const response = await axios.post('http://localhost:8000/api/login/', {
         username,
         password
       }, {
@@ -27,27 +35,28 @@ const Log = ({ setAuthenticate }) => {
         }
       });
 
-      const { access, refresh } = response.data;
+      setUserID(response.data.UserID);
 
-      if (access) {
-        const newResponse = await axios.post('http://localhost:8000/api/login/', {
+      if (response.data.Success) {
+        const newResponse = await axios.post('http://localhost:8000/api/token/', {
           username,
           password
         }, {
           headers: {
             "Content-Type": 'application/json'
           }
-        })
-        setUserID(newResponse.data.UserID);
-        console.log(userid);
-        localStorage.setItem('access_token', access);
-        localStorage.setItem('refresh_token', refresh);
-        localStorage.setItem('username', username);
-        localStorage.setItem('userid',userid);
-        setAuthenticate(true);
-        navigate('/home');
-      } else {
-        alert("Invalid Credentials");
+        });
+
+        const { access, refresh } = newResponse.data;
+
+        if (access) {
+          localStorage.setItem('access_token', access);
+          localStorage.setItem('refresh_token', refresh);
+          localStorage.setItem('username', username);
+          localStorage.setItem('userid', userid);
+          setAuthenticate(true);
+          navigate('/home');
+        }
       }
 
     } catch (error) {
@@ -86,14 +95,22 @@ const Log = ({ setAuthenticate }) => {
           />
           {userError && <p className="error-text">{userError}</p>}
           <label className="login-label" htmlFor="password">Password:</label>
+          <div className='password-container'> 
           <input
-            type="password"
+            type={show ? 'text': 'password'}
             name="password"
             className="login-input"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
+           <FontAwesomeIcon
+           icon={show ? faEyeSlash : faEye}
+           onClick={showPassword}
+           className="eye-icon"
+           style={{ cursor: 'pointer', marginLeft: '10px' }}
+          />
+          </div> 
           {passwordError && <p className="error-text">{passwordError}</p>}
           <button type="submit" className="login-button">Login</button>
           <div className="signup-link">

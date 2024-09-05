@@ -32,7 +32,7 @@ const Blog = ({ isAuthenticate }) => {
             });
 
             setBlogs(response.data);
-            localStorage.setItem('blogs', blogs);
+            localStorage.setItem('blogs', JSON.stringify(response.data));
             console.log(response.data); 
             console.log(response.data); 
         } catch (error) {
@@ -69,10 +69,11 @@ const Blog = ({ isAuthenticate }) => {
                     localStorage.setItem('blogs', JSON.stringify(updateStoredBlogs));
 
                 }
-                 
+                
             }
         } catch (error) {
             console.error('Failed to delete blog:', error);
+
         }
     };
 

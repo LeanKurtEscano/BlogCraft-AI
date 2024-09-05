@@ -5,23 +5,23 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background:  #232528;
+  background-color: #282727
 }
 
 .body {
   height: 100%; 
-  background:  #232528;
+  background-color: #282727;
 }
 
 
 
 .login-section {
-  background:  #232528;;
+  background-color: #282727;
 }
 
 .signup-section {
   margin-top: 35px;
-  background:  #232528;;
+  background-color: #282727;
 }
 
 .blog-section {

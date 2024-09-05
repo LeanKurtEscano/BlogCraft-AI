@@ -1,8 +1,9 @@
 .error-text {
   color: red;
+  margin: 5px;
 }
 .login-container {
-    width: 500px;
+    width: 400px;
     height: 350px;
     padding: 20px;
     border-radius: 8px;
@@ -32,9 +33,6 @@
     text-decoration: none; /* Ensures no default underline */
   }
   
-  
-  
-
 
   .login-form {
     display: flex;
@@ -91,4 +89,29 @@
     background-color: #8a2be2; /* Violet color */
     transition: background-position 0.6s ease-in-out, background-color 0.6s ease-in-out;
   }
+
+
   
+  .password-container {
+    position: relative;
+    width: 100%;
+  }
+
+  .login-input {
+    width: 100%;
+    padding-right: 40px; /* Space for the eye icon */
+    padding: 10px;
+    font-size: 16px;
+  }
+  
+
+  .eye-icon {
+    position: absolute;
+    font-size: 24px;
+    right: 10px;
+    top: 35%;
+    padding-left: 40px;
+    cursor: pointer;
+    color: #666; /* Adjust color as needed */
+    font-size: 18px;
+  }

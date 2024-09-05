@@ -68,7 +68,6 @@ const Home = ({isAuthenticate}) => {
 
   }
   
-
   return (
     <section className='section1'>
       <div className='main-container'>
