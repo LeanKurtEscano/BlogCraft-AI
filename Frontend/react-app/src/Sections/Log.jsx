@@ -35,7 +35,11 @@ const Log = ({ setAuthenticate }) => {
         }
       });
 
-      setUserID(response.data.UserID);
+      
+      const user = response.data.UserID; 
+      localStorage.setItem("userid", user);
+      setUserID(user);
+ 
 
       if (response.data.Success) {
         const newResponse = await axios.post('http://localhost:8000/api/token/', {
@@ -53,7 +57,6 @@ const Log = ({ setAuthenticate }) => {
           localStorage.setItem('access_token', access);
           localStorage.setItem('refresh_token', refresh);
           localStorage.setItem('username', username);
-          localStorage.setItem('userid', userid);
           setAuthenticate(true);
           navigate('/home');
         }

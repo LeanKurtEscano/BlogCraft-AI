@@ -8,6 +8,8 @@ const Blog = ({ isAuthenticate }) => {
     const [ blogs, setBlogs] = useState([]);
     const { userid, setUserID } = useContext(MyContext);
 
+  
+
     useEffect(() => {
         if (!userid) {
             const storedUserID = localStorage.getItem('userid');
@@ -17,6 +19,7 @@ const Blog = ({ isAuthenticate }) => {
             }
         }
     }, [userid, setUserID]);
+    
     
 
     const fetchBlogs = async () => {
@@ -33,8 +36,6 @@ const Blog = ({ isAuthenticate }) => {
 
             setBlogs(response.data);
             localStorage.setItem('blogs', JSON.stringify(response.data));
-            console.log(response.data); 
-            console.log(response.data); 
         } catch (error) {
             console.error('Failed to fetch blogs:', error);
         }
