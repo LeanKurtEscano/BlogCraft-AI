@@ -135,6 +135,7 @@ def delete_blog(request):
         blog_id = data.get('blogid')
         user_id = data.get('userid')
         print(blog_id)
+        print(user_id)
 
       
         try:

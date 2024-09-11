@@ -97,9 +97,6 @@ const Blog = ({ isAuthenticate }) => {
     return (
         <section className='blog-page'>
         <div className='topic-container'>
-        <div className='topic-title'>
-            <h1>{selectedBlogData ? selectedBlogData.topic : 'Select a blog'}</h1>
-        </div>
         </div>
         <div className='topic-text'>
             <p>{selectedBlogData ? selectedBlogData.content: ''}</p>

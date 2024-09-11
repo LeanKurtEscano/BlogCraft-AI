@@ -4,7 +4,7 @@
   
   .slide {
     height: 100%;
-    width: 180px;
+    width: auto;
     position: absolute;
     top: 0;
     left: 0;
@@ -14,7 +14,7 @@
     transition: transform 0.5s ease; 
     z-index: 1000;
     background-color: #302f2f;
-    transform: translateX(-180px); 
+    transform: translateX(-310px); 
   }
   
   .slide.open {
@@ -44,6 +44,7 @@
   /* Sidebar content styling */
   .sidebar-content {
     margin-top: 60px;
+    width: auto;
     overflow: auto; 
   }
   
@@ -79,21 +80,52 @@
   }
 
   .user-content {
+    width: 150px;
+    
+    margin-right: 20px;
     
     padding: 10px;
     display: flex;
+    overflow-x: hidden;
     justify-content: center;
     align-items: center;
+    transition: 0.3s ease;
   }
 
 .user-content:hover {
 
     background: rgb(67, 67, 67);
     cursor: pointer;
+    border-radius: 5px;
   
 }
 
 .user-title {
    color: white;
+   font-size: 13px;
+
 }
 
+
+.user-container  {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-left: 30px;
+}
+
+.delete-button {
+  background-color: transparent; 
+  border: 1px solid red; 
+  padding: 10px 15px 10px 15px; 
+  margin-right: 10px;
+  cursor: pointer; 
+  border-radius: 5px; 
+  transition: background-color 0.3s ease; /* Smooth transition */
+}
+
+.delete-button:hover {
+  background: rgb(67, 67, 67);
+  
+  cursor: pointer;
+}

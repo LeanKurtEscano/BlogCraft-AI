@@ -20,6 +20,8 @@ const Log = ({ setAuthenticate }) => {
     setShow(!show);
   }
 
+
+
   const handleForm = async (e) => {
     e.preventDefault();
     setUserError("");
@@ -63,7 +65,6 @@ const Log = ({ setAuthenticate }) => {
       }
 
     } catch (error) {
-      // Handle unexpected errors
       if (error.response) {
         const errorData = error.response.data;
         if (errorData.User) {

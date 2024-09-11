@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 
 
 class BlogArticle(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)  # This is the foreign key relationship
+    user = models.ForeignKey(User,on_delete=models.CASCADE)  # This is the foreign key relationship
     topic = models.CharField(max_length=400)
     tone = models.CharField(max_length=30)
     style = models.CharField(max_length=30)
