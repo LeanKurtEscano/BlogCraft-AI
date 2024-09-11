@@ -40,14 +40,14 @@ const Nav = ({ isAuthenticate, setAuthenticate }) => {
 
   return (
     <nav className={`navbar ${isOpen ? 'open' : ''}`}>
-      <div className='logo-container'>
+     <Link to = '/home'><div className='logo-container'>
         <img
           src={logo2}
           className='img-inside'
           height={49}
           width={200}
         />
-      </div>
+      </div></Link> 
       <div className='nav-container'>
         <div className='menu-icon' onClick={toggleNavBar}>
           <div className={`bar ${isOpen ? 'open' : ''}`}></div>

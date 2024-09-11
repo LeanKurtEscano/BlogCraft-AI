@@ -26,13 +26,11 @@
 
 .blog-section {
   width: 100%;
-  height: auto;
+  overflow: auto;
+  height: 100vh;
+  padding-top: 20px;
+  
   background-color: #282727;
-  padding-bottom: 20px;
+
 }
 
-.blogdetails-section {
-  width: 100%;
-  height: 100vh;
-  background-color: #282727;
-}

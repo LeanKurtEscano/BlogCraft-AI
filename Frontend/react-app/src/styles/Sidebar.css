@@ -1,0 +1,99 @@
+* {
+    box-sizing: border-box;
+  }
+  
+  .slide {
+    height: 100%;
+    width: 180px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border: 1px solid black;
+    border: 1px solid #3c3c3c; 
+    box-shadow: 6px 6px 15px #1c1c1c, -6px -6px 8px #302f2f; 
+    transition: transform 0.5s ease; 
+    z-index: 1000;
+    background-color: #302f2f;
+    transform: translateX(-180px); 
+  }
+  
+  .slide.open {
+    transform: translateX(0); 
+  }
+  
+
+  .toggle {
+    position: fixed; 
+    top: 20px;      
+    left: 20px;      
+    z-index: 1100;  
+  }
+  
+  .toggle-button {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: black; /* Ensure visibility */
+  }
+  
+  .toggle-button:focus {
+    outline: none;
+  }
+  
+  /* Sidebar content styling */
+  .sidebar-content {
+    margin-top: 60px;
+    overflow: auto; 
+  }
+  
+  ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 20px 0;
+  }
+  
+  li {
+    padding: 10px;
+    font-size: 18px;
+  }
+  
+
+.history-title {
+     /* Ensure text is large enough */
+    background: linear-gradient(45deg, #ff69b4 0%, #8a2be2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
+    display: flex;
+    padding-left: 20px;
+   
+    margin-bottom: 10px;/* Ensures gradient is applied correctly */
+  }
+
+  .icon-gradient {
+    display: inline-block;
+    background: linear-gradient(40deg, #ff69b4 0%, #8a2be2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .user-content {
+    
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+.user-content:hover {
+
+    background: rgb(67, 67, 67);
+    cursor: pointer;
+  
+}
+
+.user-title {
+   color: white;
+}
+

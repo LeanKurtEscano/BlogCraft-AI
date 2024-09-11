@@ -35,7 +35,6 @@ def generate_blog(request):
         prompt = create_prompt(tone, topic, style, complexity)
         print("Successfully Created Prompt")
        
-        # Create the model
         
         genai.configure(api_key="")
         generation_config = {

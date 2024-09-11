@@ -4,6 +4,7 @@ import Home from './Sections/Home';
 import Log from './Sections/Log';
 import Signup from './Sections/Signup';
 import Blog from './Sections/Blog';
+import Sidebar from './Sections/Sidebar';
 
 import { MyContextProvider } from './Sections/MyContext';
 import './App.css';
@@ -58,6 +59,7 @@ function App() {
              path='/blog'
              element={
               <section className='blog-section'>
+                  <Sidebar isAuthenticate={isAuthenticate} />
                 < Blog isAuthenticate= {isAuthenticate}/>
               </section>
              }/>     
